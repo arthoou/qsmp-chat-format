@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "id": "qsmp_chat_format",
+  "version": "${version}",
+  "name": "QSMP Chat Format",
+  "description": "Changes the chat format to resemble QSMP.\n\nMade by Arthou",
+  "authors": [
+    {
+      "name": "Made by Arthou",
+      "contact": {
+        "homepage": "https://discord.com/users/990003604725321808"
+      }
+    }
+  ],
+  "contact": {
+    "homepage": "https://discord.com/users/990003604725321808"
+  },
+  "license": "All Rights Reserved",
+  "icon": "icon.png",
+  "environment": "*",
+  "mixins": [
+    "qsmp_chat_format.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.19.2",
+    "minecraft": "1.21.11",
+    "java": ">=21"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "Made by Arthou": "https://discord.com/users/990003604725321808"
+      }
+    }
+  }
+}

@@ -1,0 +1,49 @@
+plugins {
+    id 'fabric-loom' version "${loom_version}"
+}
+version = project.mod_version
+group = 'com.arthou'
+base { archivesName = project.archives_base_name }
+repositories { mavenCentral() }
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings loom.officialMojangMappings()
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+}
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(21)
+    withSourcesJar()
+}
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.release = 21
+}
+processResources {
+    inputs.property 'version', project.version
+    filesMatching('fabric.mod.json') {
+        expand([version: project.version]) { escapeBackslash = true }
+    }
+}
+jar { from('LICENSE') }
+
+tasks.register('verifyMessages', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'com.arthou.qsmpchatformat.ChatMessagesTest'
+    maxHeapSize = '1G'
+}
+check.dependsOn verifyMessages
+
+tasks.register('verifyMixins', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'com.arthou.qsmpchatformat.MixinLoadTest'
+    maxHeapSize = '1G'
+    workingDir = layout.buildDirectory.dir('mixin-verification').get().asFile
+    doFirst {
+        workingDir.mkdirs()
+        classpath = classpath.filter { it.exists() }
+    }
+}
+
+check.dependsOn verifyMixins
